@@ -6,7 +6,13 @@
 }
 
 .todo__buttons--button {
-  // height: 50px; 
+  border: 0;  
+  padding: 5px 20px;
+  background-color: #FFC173;
+  outline: none;
+}
+
+.todo__dropDown_wrapper--button {
   border: 0;  
   padding: 5px 20px;
   background-color: #FFC173;

@@ -15,28 +15,86 @@ body {
   align-items: center;
   border: 1px solid black;
   padding: 15px;
-
-  form {
+  .enterTodoForm {
     margin-bottom: 15px;
   }
-
   .dividingLine {
     width: 100%;
     border: 1px solid black;
     margin-bottom: 20px;
   }
-
   .todos {
     width: 100%;
+    .todo {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
 
+    .todo__wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }    
+    .todo__dropDown {
+      display: none;
+      flex-direction: column;
+      align-items: center;      
+      margin: 10px 0;
+      border: double black;
+      width: 90%;      
+      &_form {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;        
+        width: 90%;
+      }
+      &_input {        
+        border: 0;
+        background-color: #FFC173;
+        outline: none;
+      }
+      &_dividingLine {
+        width: 90%;
+        border: 1px solid black;
+        margin-bottom: 20px;
+      }
+      &_wrapper {
+        width: 90%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .todo__dropDown--visible {
+      display: flex;
+    }
+  }
+  
+  .completedTodos {
+    width: 100%;
+    display: none;
+    flex-direction: column;
     .todo {
       display: flex;
       justify-content: space-between;
       align-items: center;
-
-
+    }    
+    .completedTodos__text {
+      text-align: center;
+      font-weight: 500;
+      font-size: 20px;
     }
-    
+    .completedTodos__dividingLine{
+      width: 100%;
+      border: 1px solid black;
+      margin-top: 20px;
+      margin-bottom: 5px;
+    }
   }
-  
+  .completedTodos--visible {
+    display: flex;
+  }
+
 }
