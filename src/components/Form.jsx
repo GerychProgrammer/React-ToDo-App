@@ -4,12 +4,14 @@ const Form = (props) => {
   const [inputValue, setInputValue] = useState("");
 
   const addNewTodo= (e) => {
-    const todo = {}
+    const todo = {};
+
     e.preventDefault();
+    
     if (inputValue !== "") {
       const date = new Date();
       todo.text = inputValue;
-      todo.id = date.getSeconds();
+      todo.id = date.getMilliseconds();
       props.getInputValue(todo);
       setInputValue("");
     } else {
@@ -17,7 +19,7 @@ const Form = (props) => {
     }
   }
 
-  return <form>
+  return <form className="enterTodoForm">
       <input type="text" className="formInput" value={inputValue} placeholder="TO-DO" onChange={e => {setInputValue(e.target.value)}} />
       <button className="form__button" onClick={e => addNewTodo(e)}>Add</button>
     </form>  
