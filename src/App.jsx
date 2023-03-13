@@ -32,19 +32,11 @@ function App() {
   };
 
   return <div className = "App">
-    <Form getInputValue = {getInputValue} />
-
-    <div className = "dividingLine"></div>
-
-    <div className = "todos">
-      <Todo todos = {todos} removeTodo = {removeTodo} complete = {copleteTodo} />
-    </div>
-
-    <div className = {isCompletedTodosVisible ? "completedTodos--visible completedTodos" : "completedTodos"}>
-      <div className = "completedTodos__dividingLine"></div>
-      <span className="completedTodos__text">DONE</span>
-      <CompletedTodos completedTodos = {completedTodos} removeCompleteTodo = {removeCompleteTodo} />
-    </div>
+    <Form getInputValue = {getInputValue} />    
+    
+    <Todo todos = {todos} removeTodo = {removeTodo} complete = {copleteTodo} />
+    
+    <CompletedTodos completedTodos = {completedTodos} removeCompleteTodo = {removeCompleteTodo} isCompletedTodosVisible = {isCompletedTodosVisible} />
   </div>;  
 }
 

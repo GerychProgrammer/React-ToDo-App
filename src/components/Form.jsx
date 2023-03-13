@@ -22,6 +22,7 @@ const Form = (props) => {
   return <form className="enterTodoForm">
       <input type="text" className="formInput" value={inputValue} placeholder="TO-DO" onChange={e => {setInputValue(e.target.value)}} />
       <button className="form__button" onClick={e => addNewTodo(e)}>Add</button>
+      <div className = "dividingLine"></div>
     </form>  
 }
 
