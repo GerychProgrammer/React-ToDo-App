@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Kirill",
+    "email": "tochik@list.ru",
+    "password": "1111",
+    "permission": "user"
+  },
+  {
+    "name": "Kirill",
+    "email": "kirilltv@yandex.ru",
+    "password": "1111",
+    "permission": "user"
+  },
+  {
+    "name": "Kirill",
+    "email": "kirilltv3@gmail.com",
+    "password": "1111",
+    "permission": "user"
+  }
+]
