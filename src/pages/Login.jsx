@@ -1,27 +1,32 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/login.scss";
+import accounts from "../data/accounts.json"
 
-const Login = () => {
+const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate("");
-  const accounts = JSON.parse(localStorage.getItem("users"));
+  if (JSON.parse(localStorage.getItem("users")) === null) {
+    localStorage.setItem("users", JSON.stringify(accounts))
+  }
+  const localAccounts = JSON.parse(localStorage.getItem("users"));
 
   const authorization = (e) => {
     e.preventDefault();
 
     let isValidate = false;
 
-    isValidate = accounts.some((element) => element.email === email && element.password === password);
+    isValidate = localAccounts.some((element) => element.email === email && element.password === password);
     
-    accounts.forEach(element => {
+    localAccounts.forEach(element => {
       if (element.email === email) {
         localStorage.setItem("userName", JSON.stringify(element.name))
       }
     });
 
     if (isValidate) {
+      props.setAuth(true);
       return navigate("/home");
     } else {
       console.log(false);

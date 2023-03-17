@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import DropDownToDo from "./DropDownToDo";
+import Sorting from "./Sorting";
+import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowDownShortWide, faXmark} from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faArrowDownShortWide, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 const Todo = (props) => {
   const [dropDownVisibleIdList, setDropDownVisibleIdList] = useState([]);
@@ -16,6 +18,24 @@ const Todo = (props) => {
 
   return (
     <div className = "todos">
+      <SearchBar 
+      isSearchVisible = {props.isSearchVisible} 
+      searchTodo = {props.searchTodo} 
+      cancleSearch = {props.cancleSearch} 
+      />
+
+      <Sorting 
+        isSortingVisible = {props.isSortingVisible} 
+        sortingTodos = {props.sortingTodos} 
+        options = {[
+          {id: 1, value: "textDown", name: "От А до Я"},
+          {id: 2, value: "textUp", name: "От Я до А"},
+          {id: 3, value: "timeNew", name: "Новые"},
+          {id: 4, value: "timeOld", name: "Старые"}          
+        ]}
+      />
+      
+
       {
         props.todos.map((value) => 
           (

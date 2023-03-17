@@ -1,5 +1,6 @@
 @import "./UI/input.scss";
 @import "./UI/buttons.scss";
+@import "./UI/searchBar.scss";
 
 body {
   background-image: url("../img/bg.jpg");
@@ -39,100 +40,113 @@ body {
 
   }
   .home__wrapper  {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid black;
-  border-radius: 10%;
-  background-color: rgba(210, 195, 166, 0.5);
-  box-shadow: 0px 5px 31px 21px rgba(70, 77, 57, 0.8);;
-  padding: 15px;
-  input {
-    background: transparent;
-  }
-  button {
-    background: transparent;
-  }
-  .enterTodoForm {
-    margin-bottom: 15px;
-  }
-  .dividingLine {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border: 1px solid black;
-    margin-top: 10px;
-  }
-  .todos {
-    width: 100%;
-    .todo {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
+    border-radius: 10%;
+    background-color: rgba(210, 195, 166, 0.5);
+    box-shadow: 0px 5px 31px 21px rgba(70, 77, 57, 0.8);;
+    padding: 15px;
+    input {
+      background: transparent;
     }
-
-    .todo__wrapper {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    button {
+      background: transparent;
+    }
+    .enterTodoForm {
+      margin-bottom: 15px;
+    }
+    .dividingLine {
       width: 100%;
-    }    
-    .todo__dropDown {
-      display: none;
-      flex-direction: column;
-      align-items: center;      
-      margin: 10px 0;
-      border: double black;
-      width: 90%;      
-      &_form {
+      border: 1px solid black;
+      margin-top: 10px;
+    }
+    .todos {
+      width: 100%;
+      .todos__sorting {
+        display: none;
+        select {
+          background: transparent;
+          padding: 5px;
+          outline: none;
+        }
+      }
+      .sorting__visible {
+        display: block;
+      }        
+
+
+      .todo {
         display: flex;
-        justify-content: space-between;
-        align-items: center;        
-        width: 90%;
+        flex-direction: column;
+        align-items: flex-end;
       }
-      &_input {        
-        border: 0;
-        outline: none;
-      }
-      &_dividingLine {
-        width: 90%;
-        border: 1px solid black;
-        margin-bottom: 20px;
-      }
-      &_wrapper {
-        width: 90%;
+
+      .todo__wrapper {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        width: 100%;
+      }    
+      .todo__dropDown {
+        display: none;
+        flex-direction: column;
+        align-items: center;      
+        margin: 10px 0;
+        border: double black;
+        width: 90%;      
+        &_form {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;        
+          width: 90%;
+        }
+        &_input {        
+          border: 0;
+          outline: none;
+        }
+        &_dividingLine {
+          width: 90%;
+          border: 1px solid black;
+          margin-bottom: 20px;
+        }
+        &_wrapper {
+          width: 90%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+      .todo__dropDown--visible {
+        display: flex;
       }
     }
-    .todo__dropDown--visible {
-      display: flex;
-    }
-  }
-  
-  .completedTodos {
-    width: 100%;
-    display: none;
-    flex-direction: column;
-    .todo {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }    
-    .completedTodos__text {
-      text-align: center;
-      font-weight: 500;
-      font-size: 20px;
-    }
-    .completedTodos__dividingLine{
-      width: 100%;
-      border: 1px solid black;
-      margin-top: 20px;
-      margin-bottom: 5px;
-    }
-  }
-  .completedTodos--visible {
-    display: flex;
-  }
 
-}
+    .completedTodos {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      .todo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }    
+      .completedTodos__text {
+        text-align: center;
+        font-weight: 500;
+        font-size: 20px;
+      }
+      .completedTodos__dividingLine{
+        width: 100%;
+        border: 1px solid black;
+        margin-top: 20px;
+        margin-bottom: 5px;
+      }
+    }
+    .completedTodos--visible {
+      display: flex;
+    }
+
+  }
 }

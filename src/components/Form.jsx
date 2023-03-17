@@ -12,6 +12,8 @@ const Form = (props) => {
       const date = new Date();
       todo.text = inputValue;
       todo.id = date.getMilliseconds();
+      // todo.time = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+      todo.time = new Date();
       props.getInputValue(todo);
       setInputValue("");
     } else {
