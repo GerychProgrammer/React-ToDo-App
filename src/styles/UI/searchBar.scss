@@ -1,0 +1,20 @@
+.todos__search {
+  display: none;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  input {
+    outline: none;
+    border: none;
+    padding: 5px;
+    width: 100%;
+  }
+  button {
+    border: none;
+    padding-right: 20px;
+  }
+}
+
+.todos__search-visible {
+  display: flex;
+}
