@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/login.scss";
 import accounts from "../data/accounts.json"
+import { AuthContext } from "../context/context";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate("");
+  const {setAuth} = useContext(AuthContext);
+
   if (JSON.parse(localStorage.getItem("users")) === null) {
     localStorage.setItem("users", JSON.stringify(accounts))
   }
@@ -26,7 +29,7 @@ const Login = (props) => {
     });
 
     if (isValidate) {
-      props.setAuth(true);
+      setAuth(true);
       return navigate("/home");
     } else {
       console.log(false);

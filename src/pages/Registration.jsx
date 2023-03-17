@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/registration.scss";
 import accounts from "../data/accounts.json";
+import { AuthContext } from "../context/context";
 
 const Registration = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const {setAuth} = useContext(AuthContext);
   const navigate = useNavigate("");
   
   const addNewUser = (e) => {
@@ -29,6 +31,8 @@ const Registration = () => {
       localStorage.setItem("users", JSON.stringify(accounts));
       navigate("/home");
     }
+
+    setAuth(true)
   }
 
   return (

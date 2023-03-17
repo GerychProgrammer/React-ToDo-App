@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import Home from "./pages/Home.jsx";
-import Registration from "./pages/Registration.jsx";
-import Login from "./pages/Login.jsx";
+import {publicRoutes, privateRoutes} from "./routes/routes.js";
+import { AuthContext } from "./context/context.js";
 
 function App() {
   const [isAuth, setAuth] = useState(false);
@@ -11,14 +10,44 @@ function App() {
     localStorage.setItem("todos", [JSON.stringify([])]);
   }
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path='/registration' element={<Registration/>}/>
-        <Route exact path='/login' element={<Login setAuth = {setAuth}/>} />
-        {isAuth ? <Route exact path='/home' element={<Home />}/> : <Route exact path='/login' element={<Login />}/>}  
-        <Route exact path='/' element={<Navigate to="/login" replace={true} />}/> 
-      </Routes>
-    </BrowserRouter>
+    <AuthContext.Provider value={{
+      isAuth,
+      setAuth
+    }}>
+      <BrowserRouter>
+          {
+            isAuth ?
+              <Routes>
+                {
+                  publicRoutes.map(element => (
+                    <Route 
+                      key = {element.id} 
+                      exact = {element.exact} 
+                      path = {element.path} 
+                      element = {element.component}
+                    />
+                  ))
+                }
+                <Route exact path='/' element={<Navigate to="/login" replace={true} />}/> 
+              </Routes>
+              :
+              <Routes>          
+                {
+                  privateRoutes.map(element => (
+                    <Route 
+                      key = {element.id} 
+                      exact = {element.exact} 
+                      path = {element.path} 
+                      element = {element.component}
+                    />
+                  ))
+                } 
+                <Route exact path='/' element={<Navigate to="/login" replace={true} />}/>              
+              </Routes>
+            
+          }
+      </BrowserRouter>
+    </AuthContext.Provider>
   )
 }
 
