@@ -1,0 +1,15 @@
+.todos__pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+
+  &--button {
+    border: none;
+    padding: 5px 10px;
+  }
+
+  .active {
+    border: 0.5px solid #d2c3a6
+  }
+}

@@ -1,6 +1,7 @@
 @import "./UI/input.scss";
 @import "./UI/buttons.scss";
 @import "./UI/searchBar.scss";
+@import "./UI/pagination.scss";
 
 body {
   background-image: url("../img/bg.jpg");
@@ -28,10 +29,12 @@ body {
       color: #d2c3a6;
     }
 
-    .nav__wrapper--link {
+    .nav__wrapper--button {
       font-size: 20px;
       color: #d2c3a6;
       text-decoration: none;
+      border: 0;
+      background: transparent;
       &:hover {
         color: #d3a954;
         transition: 0.4s;

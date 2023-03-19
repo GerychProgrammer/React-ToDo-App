@@ -10,6 +10,8 @@ const Home = () => {
   const [todos, setTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
   const [sortedAndSearchedTodos, setSortedAndSearchedTodos] = useState([]);
+  const [todosLenght, setTodosLenght] = useState([]);
+  const [pageCount, setPageCount] = useState([]);
   const [selectedSortType, setSelectedSortType] = useState("");
   const [isCompletedTodosVisible, setIsCompletedTodosVisible] = useState(false);
   const [isSortingVisible, setSortingVisible] = useState(false);
@@ -19,6 +21,8 @@ const Home = () => {
     setTodos([...todos, value]);
     setSortingVisible(true);
     setSearchVisible(true);
+    setTodosLenght([todos.length + 1]);
+    getPageCount()
   };
   
   const copleteTodo = (todoId) => {
@@ -26,12 +30,14 @@ const Home = () => {
     setIsCompletedTodosVisible(true);
   };
 
-  const removeTodo = (todoId) => {
+  const removeTodo = (todoId, paginationArr) => {
     setTodos(todos.filter(element => element.id !== todoId));
 
     if (todos.length === 1) {
       setSortingVisible(false);
       setSearchVisible(false);
+      setPageCount([])
+      paginationArr([])
     }
   };
 
@@ -78,10 +84,16 @@ const Home = () => {
     }     
     return setSortedAndSearchedTodos(todos)
   };
+
+  const getPageCount = () => {
+    if (pageCount[pageCount.length - 1] !== Math.ceil(todosLenght / 10)) {
+      setPageCount([...pageCount ,Math.ceil(todosLenght / 10)]) 
+    }
+  };  
   
   return (
     <div className="home">
-      <NavigationBar userName = {JSON.parse(localStorage.getItem("userName"))}/>
+      <NavigationBar userName = {localStorage.getItem("userName")}/>
 
       <div className="home__wrapper">
         <Form getInputValue = {getInputValue} />    
@@ -94,6 +106,7 @@ const Home = () => {
           sortingTodos = {getSortType} 
           isSearchVisible = {isSearchVisible} 
           searchTodo = {searchTodo}
+          pageCount = {pageCount}
         />
     
        <CompletedTodos completedTodos = {completedTodos} removeCompleteTodo = {removeCompleteTodo} isCompletedTodosVisible = {isCompletedTodosVisible} />
