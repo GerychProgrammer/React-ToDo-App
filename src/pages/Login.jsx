@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../styles/login.scss";
 import accounts from "../data/accounts.json"
 import { AuthContext } from "../context/context";
+import "../styles/login.scss";
 
-const Login = (props) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate("");
@@ -24,12 +24,13 @@ const Login = (props) => {
     
     localAccounts.forEach(element => {
       if (element.email === email) {
-        localStorage.setItem("userName", JSON.stringify(element.name))
+        localStorage.setItem("userName", element.name)
       }
     });
 
     if (isValidate) {
       setAuth(true);
+      localStorage.setItem("auth", "true");
       return navigate("/home");
     } else {
       console.log(false);

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const Form = (props) => {
   const [inputValue, setInputValue] = useState("");
+  const [todoId, setTodoId] = useState(1);
 
   const addNewTodo= (e) => {
     const todo = {};
@@ -9,13 +10,13 @@ const Form = (props) => {
     e.preventDefault();
     
     if (inputValue !== "") {
-      const date = new Date();
       todo.text = inputValue;
-      todo.id = date.getMilliseconds();
+      todo.id = todoId;
       // todo.time = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
       todo.time = new Date();
       props.getInputValue(todo);
       setInputValue("");
+      setTodoId(todoId + 1);
     } else {
       console.error("Введите текст");
     }
