@@ -12,8 +12,7 @@ const Form = (props) => {
     if (inputValue !== "") {
       todo.text = inputValue;
       todo.id = todoId;
-      // todo.time = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-      todo.time = new Date();
+      todo.time = `${new Date().toLocaleDateString("en-GB")} ${new Date().toLocaleTimeString("en-GB")}`;
       props.getInputValue(todo);
       setInputValue("");
       setTodoId(todoId + 1);
