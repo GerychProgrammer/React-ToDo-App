@@ -1,0 +1,55 @@
+// @import "./UI/pagination.scss";
+
+.history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 150px;
+    padding: 0 40px;
+    width: 100%;
+    h2 {
+      font-size: 30px;
+      color: #d2c3a6;
+    }
+    .nav__wrapper--button {
+      font-size: 20px;
+      color: #d2c3a6;
+      text-decoration: none;
+      border: 0;
+      background: transparent;
+      margin-right: 15px;
+      &:hover {
+        color: #d3a954;
+        transition: 0.4s;
+      }
+    }
+  }
+  &__wrapper {
+    border: 1px solid black;
+    border-radius: 10%;
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 35%; 
+    background-color: rgba(210, 195, 166, 0.7);
+    box-shadow: 0px 5px 31px 21px rgba(70, 77, 57, 0.8);;
+
+    .modifiedTodo {
+      display: flex;
+      flex-wrap: wrap;
+      border: 1px solid black;
+      padding: 15px 30px;
+      .modifiedTodo__text-flexBasis {
+        flex-basis: 100%;
+      }
+    }
+  }
+}

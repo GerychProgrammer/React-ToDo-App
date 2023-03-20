@@ -10,7 +10,6 @@ const Home = () => {
   const [todos, setTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
   const [sortedAndSearchedTodos, setSortedAndSearchedTodos] = useState([]);
-  const [pageCount, setPageCount] = useState(0);
   const [selectedSortType, setSelectedSortType] = useState("");
   const [isCompletedTodosVisible, setIsCompletedTodosVisible] = useState(false);
   const [isSortingVisible, setSortingVisible] = useState(false);
@@ -96,8 +95,6 @@ const Home = () => {
           sortingTodos = {getSortType} 
           isSearchVisible = {isSearchVisible} 
           searchTodo = {searchTodo}
-          pageCount = {pageCount}
-          setPageCount = {setPageCount}
         />
     
        <CompletedTodos completedTodos = {completedTodos} removeCompleteTodo = {removeCompleteTodo} isCompletedTodosVisible = {isCompletedTodosVisible} />

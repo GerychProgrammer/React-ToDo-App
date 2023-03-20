@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import DropDownToDo from "./DropDownToDo";
 import Sorting from "./Sorting";
 import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faArrowDownShortWide, faXmark, faPencil, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { ModifiedTodos } from "../context/context";
 
 const Todo = (props) => {
   const [dropDownVisibleIdList, setDropDownVisibleIdList] = useState([]);
   const [todoEditVisibilityIdList, setTodoEditVisibilityIdList] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
   const [todoValue, setTodoValue] = useState("");
+  const {modifiedTodos, setModifiedTodos} = useContext(ModifiedTodos);
 
   const addDropDownToDo = (dropDownId) => {
     setDropDownVisibleIdList([...dropDownVisibleIdList, dropDownId])
@@ -22,12 +25,14 @@ const Todo = (props) => {
     setTodoEditVisibilityIdList([...todoEditVisibilityIdList, todoId]);
     const index = props.todos.findIndex(element => element.id === todoId);
     setTodoValue(props.todos[index].text)
-    console.log(props.todos);
   };
 
   const confirmEditTodo = (todoId) => {
+    console.log(modifiedTodos);
     setTodoEditVisibilityIdList(todoEditVisibilityIdList.filter(element => element !== todoId));
     const index = props.todos.findIndex(element => element.id === todoId);
+    const oldTodo = Object.assign({}, props.todos[index]);
+    setModifiedTodos([...modifiedTodos, oldTodo])
     props.todos[index].text = todoValue;
     console.log(props.todos);
   }
@@ -52,11 +57,11 @@ const Todo = (props) => {
       />
 
       {
-        props.todos.slice(props.pageCount * 10, (props.pageCount + 1) * 10).map((value) => 
+        props.todos.slice(pageCount * 10, (pageCount + 1) * 10).map((value) => 
           (
             <div className = "todo" key = {value.id}>
               <div className = "todo__wrapper">
-                <span className = {todoEditVisibilityIdList.includes(value.id) ? "todo__span-displayNone" : "todo__span"}>{value.text}</span>
+                <span className = {todoEditVisibilityIdList.includes(value.id) ? "todo__span-displayNone" : "todo__span"}>{value.id}. {value.text}</span>
                 <input type="text" value={todoValue} onChange = {e => setTodoValue(e.target.value)} className = {todoEditVisibilityIdList.includes(value.id) ? "todo__text todo__text-visible" : "todo__text"} />
                 <div className = "todo__buttons">
                   <button className= {todoEditVisibilityIdList.includes(value.id) ? "todo__buttons--button-displayNone" : "todo__buttons--button"} onClick = {e => editTodo(value.id)}><FontAwesomeIcon icon = {faPencil}/></button>
@@ -79,7 +84,7 @@ const Todo = (props) => {
 
       <div className="todos__pagination">
         {new Array(Math.ceil(props.todos.length / 10)).fill(null).map((_, numberIndex) => (
-          <button key={numberIndex} className="todos__pagination--button" onClick={e => props.setPageCount(numberIndex)}>{numberIndex + 1}</button>
+          <button key={numberIndex} className="todos__pagination--button" onClick={e => setPageCount(numberIndex)}>{numberIndex + 1}</button>
         ))}
       </div>
     </div>
