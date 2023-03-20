@@ -10,8 +10,7 @@ const Home = () => {
   const [todos, setTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
   const [sortedAndSearchedTodos, setSortedAndSearchedTodos] = useState([]);
-  const [todosLenght, setTodosLenght] = useState([]);
-  const [pageCount, setPageCount] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
   const [selectedSortType, setSelectedSortType] = useState("");
   const [isCompletedTodosVisible, setIsCompletedTodosVisible] = useState(false);
   const [isSortingVisible, setSortingVisible] = useState(false);
@@ -21,8 +20,6 @@ const Home = () => {
     setTodos([...todos, value]);
     setSortingVisible(true);
     setSearchVisible(true);
-    setTodosLenght([todos.length + 1]);
-    getPageCount()
   };
   
   const copleteTodo = (todoId) => {
@@ -30,14 +27,12 @@ const Home = () => {
     setIsCompletedTodosVisible(true);
   };
 
-  const removeTodo = (todoId, paginationArr) => {
+  const removeTodo = (todoId) => {
     setTodos(todos.filter(element => element.id !== todoId));
 
     if (todos.length === 1) {
       setSortingVisible(false);
       setSearchVisible(false);
-      setPageCount([])
-      paginationArr([])
     }
   };
 
@@ -53,6 +48,7 @@ const Home = () => {
     setSelectedSortType(sortValue)
   };
 
+  // eslint-disable-next-line no-unused-vars
   const sortingTodos = useMemo(() => {
     if (selectedSortType !== "") {
       const todosCopy = [...todos];
@@ -83,13 +79,7 @@ const Home = () => {
       return setSortedAndSearchedTodos(todosCopy.filter(element => element.text === searchValue));  
     }     
     return setSortedAndSearchedTodos(todos)
-  };
-
-  const getPageCount = () => {
-    if (pageCount[pageCount.length - 1] !== Math.ceil(todosLenght / 10)) {
-      setPageCount([...pageCount ,Math.ceil(todosLenght / 10)]) 
-    }
-  };  
+  }; 
   
   return (
     <div className="home">
@@ -107,6 +97,7 @@ const Home = () => {
           isSearchVisible = {isSearchVisible} 
           searchTodo = {searchTodo}
           pageCount = {pageCount}
+          setPageCount = {setPageCount}
         />
     
        <CompletedTodos completedTodos = {completedTodos} removeCompleteTodo = {removeCompleteTodo} isCompletedTodosVisible = {isCompletedTodosVisible} />

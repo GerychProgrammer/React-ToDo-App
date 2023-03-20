@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DropDownToDo from "./DropDownToDo";
 import Sorting from "./Sorting";
 import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowDownShortWide, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faArrowDownShortWide, faXmark, faPencil, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 
 const Todo = (props) => {
   const [dropDownVisibleIdList, setDropDownVisibleIdList] = useState([]);
-  const [paginationArr, setPaginationArr] = useState([]);
+  const [todoEditVisibilityIdList, setTodoEditVisibilityIdList] = useState([]);
+  const [todoValue, setTodoValue] = useState("");
 
   const addDropDownToDo = (dropDownId) => {
     setDropDownVisibleIdList([...dropDownVisibleIdList, dropDownId])
@@ -17,23 +18,19 @@ const Todo = (props) => {
     setDropDownVisibleIdList(dropDownVisibleIdList.filter(element => element !== todoId));
   };
 
-  const changePage = (pageNumber) => {
-    // TODO: Почему когда я использую setPaginationArr(props.todos) массив paginationArr был равен []
-    const lastTodoOnPage = pageNumber * 10 - 1;
-    const firstTodoOnPage = lastTodoOnPage - 9;
-    setPaginationArr([...props.todos].filter((element, index) => index >= firstTodoOnPage && index <= lastTodoOnPage))
+  const editTodo = (todoId) => {
+    setTodoEditVisibilityIdList([...todoEditVisibilityIdList, todoId]);
+    const index = props.todos.findIndex(element => element.id === todoId);
+    setTodoValue(props.todos[index].text)
+    console.log(props.todos);
+  };
+
+  const confirmEditTodo = (todoId) => {
+    setTodoEditVisibilityIdList(todoEditVisibilityIdList.filter(element => element !== todoId));
+    const index = props.todos.findIndex(element => element.id === todoId);
+    props.todos[index].text = todoValue;
+    console.log(props.todos);
   }
-
-  useEffect(() => {
-    // TODO: Почему здесь я не могу вызвать функцию
-    if (props.todos.lenght === 1) return setPaginationArr([])
-
-    props.todos.forEach(element => {  
-      if (element.id <= 10) {
-        setPaginationArr([...props.todos].filter((element, index) => index >= 0 && index <= 9));
-      } else return
-    });
-  }, [props.todos])
 
   return (
     <div className = "todos">
@@ -53,22 +50,24 @@ const Todo = (props) => {
           {id: 4, value: "timeOld", name: "Старые"}          
         ]}
       />
-      
 
       {
-        paginationArr.map((value) => 
+        props.todos.slice(props.pageCount * 10, (props.pageCount + 1) * 10).map((value) => 
           (
             <div className = "todo" key = {value.id}>
               <div className = "todo__wrapper">
-                <span className = "todoText">{value.text}</span>
+                <span className = {todoEditVisibilityIdList.includes(value.id) ? "todo__span-displayNone" : "todo__span"}>{value.text}</span>
+                <input type="text" value={todoValue} onChange = {e => setTodoValue(e.target.value)} className = {todoEditVisibilityIdList.includes(value.id) ? "todo__text todo__text-visible" : "todo__text"} />
                 <div className = "todo__buttons">
+                  <button className= {todoEditVisibilityIdList.includes(value.id) ? "todo__buttons--button-displayNone" : "todo__buttons--button"} onClick = {e => editTodo(value.id)}><FontAwesomeIcon icon = {faPencil}/></button>
+                  <button className= {todoEditVisibilityIdList.includes(value.id) ? "todo__buttons--button" : "todo__buttons--button-displayNone"} onClick = {e => confirmEditTodo(value.id)}><FontAwesomeIcon icon = {faCheckCircle}/></button>
                   <button className = "todo__buttons--button" onClick = {() => {addDropDownToDo(value.id)}}><FontAwesomeIcon icon = {faArrowDownShortWide} /></button>        
                   <button className = "todo__buttons--button" 
                   onClick = {() => {
                     props.complete(value.id);
                     props.removeTodo(value.id);
                   }}><FontAwesomeIcon icon = {faCheck} /></button>
-                  <button className = "todo__buttons--button" onClick = {() => {props.removeTodo(value.id, setPaginationArr)}}><FontAwesomeIcon icon = {faXmark} /></button>
+                  <button className = "todo__buttons--button" onClick = {() => {props.removeTodo(value.id)}}><FontAwesomeIcon icon = {faXmark} /></button>
                 </div>
               </div>        
 
@@ -79,8 +78,8 @@ const Todo = (props) => {
       }
 
       <div className="todos__pagination">
-        {props.pageCount.filter(element => element !== 0).map((value) => (
-          <button key={value} className="todos__pagination--button" onClick={e => changePage(e.target.innerText)}>{value}</button>
+        {new Array(Math.ceil(props.todos.length / 10)).fill(null).map((_, numberIndex) => (
+          <button key={numberIndex} className="todos__pagination--button" onClick={e => props.setPageCount(numberIndex)}>{numberIndex + 1}</button>
         ))}
       </div>
     </div>
