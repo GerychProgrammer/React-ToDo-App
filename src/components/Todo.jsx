@@ -13,7 +13,7 @@ const Todo = (props) => {
   const [pageCount, setPageCount] = useState(0);
   const [todoValue, setTodoValue] = useState("");
   const {modifiedTodos, setModifiedTodos} = useContext(ModifiedTodos);
-  const {currentModifiedTodo, setCurrentModifiedTodo} = useContext(CurrentModifiedTodo);
+  const {setCurrentModifiedTodo} = useContext(CurrentModifiedTodo);
   const navigate = useNavigate("");
 
   const addDropDownToDo = (dropDownId) => {
