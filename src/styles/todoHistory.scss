@@ -1,5 +1,3 @@
-@import "./UI/pagination.scss";
-
 .history {
   display: flex;
   flex-direction: column;
@@ -47,6 +45,10 @@
       flex-wrap: wrap;
       border: 1px solid black;
       padding: 15px 30px;
+      gap: 50%;
+      span {
+        margin-bottom: 10px;
+      }
       .modifiedTodo__text-flexBasis {
         flex-basis: 100%;
       }
