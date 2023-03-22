@@ -3,8 +3,9 @@ import DropDownToDo from "./DropDownToDo";
 import Sorting from "./Sorting";
 import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowDownShortWide, faXmark, faPencil, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
-import { ModifiedTodos } from "../context/context";
+import { faCheck, faArrowDownShortWide, faXmark, faPencil, faCheckCircle, faClock } from '@fortawesome/free-solid-svg-icons'
+import { CurrentModifiedTodo, ModifiedTodos } from "../context/context.js";
+import { useNavigate } from "react-router-dom";
 
 const Todo = (props) => {
   const [dropDownVisibleIdList, setDropDownVisibleIdList] = useState([]);
@@ -12,6 +13,8 @@ const Todo = (props) => {
   const [pageCount, setPageCount] = useState(0);
   const [todoValue, setTodoValue] = useState("");
   const {modifiedTodos, setModifiedTodos} = useContext(ModifiedTodos);
+  const {currentModifiedTodo, setCurrentModifiedTodo} = useContext(CurrentModifiedTodo);
+  const navigate = useNavigate("");
 
   const addDropDownToDo = (dropDownId) => {
     setDropDownVisibleIdList([...dropDownVisibleIdList, dropDownId])
@@ -28,21 +31,40 @@ const Todo = (props) => {
   };
 
   const confirmEditTodo = (todoId) => {
-    console.log(modifiedTodos);
-    setTodoEditVisibilityIdList(todoEditVisibilityIdList.filter(element => element !== todoId));
+    const newModifiedText = "text" + Math.random();
     const index = props.todos.findIndex(element => element.id === todoId);
-    const oldTodo = Object.assign({}, props.todos[index]);
-    setModifiedTodos([...modifiedTodos, oldTodo])
-    props.todos[index].text = todoValue;
-    console.log(props.todos);
+    const indexOfOldTodo = modifiedTodos.findIndex(element => element.id === todoId);
+
+    if (indexOfOldTodo !== -1) {
+      modifiedTodos[indexOfOldTodo][newModifiedText] = props.todos[index].text
+      props.todos[index].text = todoValue;
+    } else {
+      const oldTodo = Object.assign({}, props.todos[index]);
+      setModifiedTodos([...modifiedTodos, oldTodo])
+      props.todos[index].text = todoValue;
+    }
+    
+    setTodoEditVisibilityIdList(todoEditVisibilityIdList.filter(element => element !== todoId));
+  }
+
+  const openTodoHistoryPage = (todoId) => {
+    const index = modifiedTodos.findIndex(element => element.id === todoId);
+    Object.keys(modifiedTodos[index]).forEach(element => {
+      if(/text/.test(element)) {
+        setCurrentModifiedTodo(modifiedTodos[index])
+      }      
+    });
+
+    // setCurrentModifiedTodo();
+    navigate(`/home/${todoId}`)
   }
 
   return (
     <div className = "todos">
       <SearchBar 
-      isSearchVisible = {props.isSearchVisible} 
-      searchTodo = {props.searchTodo} 
-      cancleSearch = {props.cancleSearch} 
+        isSearchVisible = {props.isSearchVisible} 
+        searchTodo = {props.searchTodo} 
+        cancleSearch = {props.cancleSearch} 
       />
 
       <Sorting 
@@ -65,7 +87,9 @@ const Todo = (props) => {
                 <input type="text" value={todoValue} onChange = {e => setTodoValue(e.target.value)} className = {todoEditVisibilityIdList.includes(value.id) ? "todo__text todo__text-visible" : "todo__text"} />
                 <div className = "todo__buttons">
                   <button className= {todoEditVisibilityIdList.includes(value.id) ? "todo__buttons--button-displayNone" : "todo__buttons--button"} onClick = {e => editTodo(value.id)}><FontAwesomeIcon icon = {faPencil}/></button>
+
                   <button className= {todoEditVisibilityIdList.includes(value.id) ? "todo__buttons--button" : "todo__buttons--button-displayNone"} onClick = {e => confirmEditTodo(value.id)}><FontAwesomeIcon icon = {faCheckCircle}/></button>
+                  <button className = "todo__buttons--button" onClick = {() => {openTodoHistoryPage(value.id)}}><FontAwesomeIcon icon = {faClock} /></button> 
                   <button className = "todo__buttons--button" onClick = {() => {addDropDownToDo(value.id)}}><FontAwesomeIcon icon = {faArrowDownShortWide} /></button>        
                   <button className = "todo__buttons--button" 
                   onClick = {() => {
