@@ -108,10 +108,12 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
+          flex-wrap: wrap;
         }
       }
       .todo__dropDown--visible {
         display: flex;
+        margin-left: 28px;
       }
     }
 

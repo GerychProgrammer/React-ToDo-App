@@ -5,11 +5,16 @@ import { faArrowDownShortWide, faXmark} from '@fortawesome/free-solid-svg-icons'
 const DropDownToDo = (props) => {
   const [inputValue, setInputValue] = useState("");
   const [dropDownTodos, setDropDownTodos] = useState([]);
+  const [dropDownVisibleIdList, setDropDownVisibleIdList] = useState([]);
 
   const getDropDownInputValue = (value) => {
     setDropDownTodos([...dropDownTodos, value]);
   };
 
+  const changeVisibility = (todoId) => {
+    setDropDownVisibleIdList(dropDownVisibleIdList.filter(element => element !== todoId));
+  };
+  
   const addNewTodo= (e) => {
     const todo = {};
 
@@ -32,6 +37,10 @@ const DropDownToDo = (props) => {
       props.removeDropDownTodo(props.todoId)
     }
   };
+
+  const addDropDownToDo = (dropDownId) => {
+    setDropDownVisibleIdList([...dropDownVisibleIdList, dropDownId])
+  };
   
   return (    
         <div className = {props.dropDownVisible ? "todo__dropDown todo__dropDown--visible " : "todo__dropDown"}>
@@ -47,12 +56,15 @@ const DropDownToDo = (props) => {
               <div key={value.id} className = "todo__dropDown_wrapper">
                 <span className = "todo__dropDown_wrapper_text">{value.text}</span>
                 <div className = "todo__dropDown_wrapper_buttons">
-                  <button className = "todo__dropDown_wrapper--button"><FontAwesomeIcon icon = {faArrowDownShortWide} /></button>        
+                  <button className = "todo__dropDown_wrapper--button"  onClick={() => addDropDownToDo(value.id)}><FontAwesomeIcon icon = {faArrowDownShortWide} /></button>        
                   <button className = "todo__dropDown_wrapper--button" onClick = {() => {deleteDropDownToDo(value.id)}}><FontAwesomeIcon icon = {faXmark} /></button>
                 </div>
+
+                <DropDownToDo dropDownVisible = {dropDownVisibleIdList.includes(value.id)} removeDropDownTodo = {changeVisibility}  todoId = {value.id}  />
               </div> 
             )                     
           })}
+
         </div>
           
   )      
