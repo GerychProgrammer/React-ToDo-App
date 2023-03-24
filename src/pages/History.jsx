@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import NavigationBar from "../components/NavigationBar.jsx";
-import { ModifiedTodos } from '../context/context.js';
-import "../styles/history.scss"
+import { ModifiedTodosContext } from "../context/ModifiedTodosContext";
+import "../styles/pages/history.scss"
 
 const History = (props) => {
-  const {modifiedTodos} = useContext(ModifiedTodos);
+  const {modifiedTodos} = useContext(ModifiedTodosContext);
   const [pageCount, setPageCount] = useState(0);
   const userName = localStorage.getItem("userName");
 

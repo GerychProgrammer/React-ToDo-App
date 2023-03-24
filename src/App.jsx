@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import {publicRoutes, privateRoutes} from "./routes/routes.js";
-import { AuthContext, ModifiedTodos, CurrentModifiedTodo } from "./context/context.js";
+import { AuthContext } from "./context/AuthContext";
+import { CurrentModifiedTodoContext } from "./context/CurrentModifiedTodoContext";
+import { ModifiedTodosContext } from "./context/ModifiedTodosContext";
 
 function App() {
   const [isAuth, setAuth] = useState(false);
@@ -19,11 +21,11 @@ function App() {
       isAuth,
       setAuth
     }}>
-      <ModifiedTodos.Provider value={{
+      <ModifiedTodosContext.Provider value={{
       modifiedTodos,
       setModifiedTodos    
     }}>
-      <CurrentModifiedTodo.Provider value = {{
+      <CurrentModifiedTodoContext.Provider value = {{
         currentModifiedTodo,
         setCurrentModifiedTodo
       }}>
@@ -58,8 +60,8 @@ function App() {
                   </Routes>            
               }
           </BrowserRouter>
-        </CurrentModifiedTodo.Provider>
-      </ModifiedTodos.Provider>
+        </CurrentModifiedTodoContext.Provider>
+      </ModifiedTodosContext.Provider>
     </AuthContext.Provider>
   )
 }

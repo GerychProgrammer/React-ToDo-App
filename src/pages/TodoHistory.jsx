@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import NavigationBar from "../components/NavigationBar.jsx";
-import { CurrentModifiedTodo } from '../context/context.js';
-import "../styles/todoHistory.scss"
+import { CurrentModifiedTodoContext } from "../context/CurrentModifiedTodoContext";
+import "../styles/pages/todoHistory.scss"
 
 const TodoHistory = (props) => {
-  const {currentModifiedTodo} = useContext(CurrentModifiedTodo);
+  const {currentModifiedTodo} = useContext(CurrentModifiedTodoContext);
   const userName = localStorage.getItem("userName");
   const todo = [];
   

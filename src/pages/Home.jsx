@@ -66,7 +66,6 @@ const Home = () => {
             
             return new Date(a.time) - new Date(b.time)
           })      
-      
       return setSortedAndSearchedTodos(todosCopy)
     }
     return setSortedAndSearchedTodos(todos);

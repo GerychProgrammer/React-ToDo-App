@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/context';
+import { AuthContext } from '../context/AuthContext';
 
 const NavigationBar = (props) => {
   const {setAuth} = useContext(AuthContext);

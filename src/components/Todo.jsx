@@ -4,7 +4,8 @@ import Sorting from "./Sorting";
 import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faArrowDownShortWide, faXmark, faPencil, faCheckCircle, faClock } from '@fortawesome/free-solid-svg-icons'
-import { CurrentModifiedTodo, ModifiedTodos } from "../context/context.js";
+import { CurrentModifiedTodoContext } from "../context/CurrentModifiedTodoContext";
+import { ModifiedTodosContext } from "../context/ModifiedTodosContext";
 import { useNavigate } from "react-router-dom";
 
 const Todo = (props) => {
@@ -12,8 +13,8 @@ const Todo = (props) => {
   const [todoEditVisibilityIdList, setTodoEditVisibilityIdList] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [todoValue, setTodoValue] = useState("");
-  const {modifiedTodos, setModifiedTodos} = useContext(ModifiedTodos);
-  const {currentModifiedTodo, setCurrentModifiedTodo} = useContext(CurrentModifiedTodo);
+  const {modifiedTodos, setModifiedTodos} = useContext(ModifiedTodosContext);
+  const {setCurrentModifiedTodo} = useContext(CurrentModifiedTodoContext);
   const navigate = useNavigate("");
 
   const addDropDownToDo = (dropDownId) => {
@@ -55,8 +56,16 @@ const Todo = (props) => {
       }      
     });
 
-    // setCurrentModifiedTodo();
     navigate(`/home/${todoId}`)
+  }  
+
+  const getPaginationArray = () => {
+    const currentPage = pageCount;
+
+    if (props.todos.slice(currentPage * 10, (currentPage + 1) * 10).length === 0 && currentPage !== 0) {
+        setPageCount(currentPage - 1);
+      return props.todos.slice(currentPage - 1 * 10, (currentPage) * 10)
+    } else return props.todos.slice(currentPage * 10, (currentPage + 1) * 10)
   }
 
   return (
@@ -71,15 +80,16 @@ const Todo = (props) => {
         isSortingVisible = {props.isSortingVisible} 
         sortingTodos = {props.sortingTodos} 
         options = {[
-          {id: 1, value: "textDown", name: "От А до Я"},
-          {id: 2, value: "textUp", name: "От Я до А"},
+          {id: 1, value: "textDown", name: `По алфавиту 🠓`},
+          {id: 2, value: "textUp", name: `По алфавиту 🠑`},
           {id: 3, value: "timeNew", name: "Новые"},
           {id: 4, value: "timeOld", name: "Старые"}          
         ]}
       />
 
       {
-        props.todos.slice(pageCount * 10, (pageCount + 1) * 10).map((value) => 
+        // TODO: как работает slice с первой страницей
+        getPaginationArray().map((value) => 
           (
             <div className = "todo" key = {value.id}>
               <div className = "todo__wrapper">
@@ -108,7 +118,13 @@ const Todo = (props) => {
 
       <div className="todos__pagination">
         {new Array(Math.ceil(props.todos.length / 10)).fill(null).map((_, numberIndex) => (
-          <button key={numberIndex} className="todos__pagination--button" onClick={e => setPageCount(numberIndex)}>{numberIndex + 1}</button>
+          <button 
+            key={numberIndex} 
+            className="todos__pagination--button" 
+            onClick={e => setPageCount(numberIndex)}
+          >
+            {numberIndex + 1}
+          </button>
         ))}
       </div>
     </div>

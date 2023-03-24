@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../styles/registration.scss";
+import "../styles/pages/registration.scss";
 import accounts from "../data/accounts.json";
-import { AuthContext } from "../context/context";
+import { AuthContext } from "../context/AuthContext";
 
 const Registration = () => {
   const [name, setName] = useState("");
