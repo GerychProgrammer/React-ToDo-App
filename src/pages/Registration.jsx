@@ -29,6 +29,7 @@ const Registration = () => {
     } else {
       accounts.push(newUser);
       localStorage.setItem("users", JSON.stringify(accounts));
+      localStorage.setItem("userName", newUser.name)
       navigate("/home");
     }
 
@@ -50,7 +51,7 @@ const Registration = () => {
           </div>
           <div>
             <label>Password</label>
-            <input value = {password} onChange = {(e) => {setPassword(e.target.value)}} className = "registration__password" type = "text" placeholder = "Type here..."/>
+            <input value = {password} onChange = {(e) => {setPassword(e.target.value)}} className = "registration__password" type = "password" placeholder = "Type here..."/>
           </div>
           <button className="registration__submit" onClick={(e) => {addNewUser(e)}}>Register</button>
         </form>

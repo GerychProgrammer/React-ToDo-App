@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowDownShortWide, faXmark} from '@fortawesome/free-solid-svg-icons'
 
@@ -7,9 +7,14 @@ const DropDownToDo = (props) => {
   const [dropDownTodos, setDropDownTodos] = useState([]);
   const [dropDownVisibleIdList, setDropDownVisibleIdList] = useState([]);
 
-  const getDropDownInputValue = (value) => {
-    setDropDownTodos([...dropDownTodos, value]);
-  };
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem(`dropDownTodo-${props.todoId}`))) {
+      setDropDownTodos(JSON.parse(localStorage.getItem(`dropDownTodo-${props.todoId}`)))
+    } else {
+      setDropDownTodos([])
+    }
+
+  }, []); 
 
   const changeVisibility = (todoId) => {
     setDropDownVisibleIdList(dropDownVisibleIdList.filter(element => element !== todoId));
@@ -24,8 +29,9 @@ const DropDownToDo = (props) => {
       const date = new Date();
       todo.text = inputValue;
       todo.id = date.getMilliseconds();
-      getDropDownInputValue(todo);
+      setDropDownTodos([...dropDownTodos, todo]);
       setInputValue("");
+      localStorage.setItem(`dropDownTodo-${props.todoId}`, JSON.stringify(dropDownTodos))
     } else {
       console.error("Введите текст");
     }
@@ -33,6 +39,7 @@ const DropDownToDo = (props) => {
 
   const deleteDropDownToDo = (dropDownTodoId) => {
     setDropDownTodos(dropDownTodos.filter(element => element.id !== dropDownTodoId));
+    localStorage.setItem(`dropDownTodo-${props.todoId}`, JSON.stringify(dropDownTodos));
     if (dropDownTodos.length === 1) {
       props.removeDropDownTodo(props.todoId)
     }

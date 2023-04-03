@@ -9,7 +9,13 @@ function App() {
   const [isAuth, setAuth] = useState(false);
   const [modifiedTodos, setModifiedTodos] = useState([]);
   const [currentModifiedTodo, setCurrentModifiedTodo] = useState({});
-  
+
+  if (localStorage.getItem("todos") === null) {
+    localStorage.setItem("todos", JSON.stringify([]));
+    // localStorage.setItem("dropDownTodos", JSON.stringify([]));
+    localStorage.setItem("dropDownVisibleIdList", JSON.stringify([]));    
+  }
+
   useEffect(() => {
     if (localStorage.getItem("auth")) {
       setAuth(true);

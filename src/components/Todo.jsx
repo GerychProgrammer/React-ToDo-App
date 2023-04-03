@@ -4,24 +4,38 @@ import Sorting from "./Sorting";
 import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faArrowDownShortWide, faXmark, faPencil, faCheckCircle, faClock } from '@fortawesome/free-solid-svg-icons'
-import { CurrentModifiedTodoContext } from "../context/CurrentModifiedTodoContext";
 import { ModifiedTodosContext } from "../context/ModifiedTodosContext";
 import { useNavigate } from "react-router-dom";
 
 const Todo = (props) => {
-  const [dropDownVisibleIdList, setDropDownVisibleIdList] = useState([]);
+  const [dropDownVisibleIdList, setDropDownVisibleIdList] = useState(JSON.parse(localStorage.getItem("dropDownVisibleIdList")));
   const [todoEditVisibilityIdList, setTodoEditVisibilityIdList] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [todoValue, setTodoValue] = useState("");
   const {modifiedTodos, setModifiedTodos} = useContext(ModifiedTodosContext);
-  const {setCurrentModifiedTodo} = useContext(CurrentModifiedTodoContext);
   const navigate = useNavigate("");
 
+  const saveDropDownTodoLocaly = (dropDownId, data) => {
+    const key = `dropDownTodo-${dropDownId}`;
+    localStorage.setItem(key, JSON.stringify(data));
+  };
+
   const addDropDownToDo = (dropDownId) => {
-    setDropDownVisibleIdList([...dropDownVisibleIdList, dropDownId])
+    let localStorageDropDownVisibleIdList = JSON.parse(localStorage.getItem("dropDownVisibleIdList"));
+    localStorageDropDownVisibleIdList = [...localStorageDropDownVisibleIdList, dropDownId];
+    localStorage.setItem("dropDownVisibleIdList", JSON.stringify(localStorageDropDownVisibleIdList));
+    setDropDownVisibleIdList(JSON.parse(localStorage.getItem("dropDownVisibleIdList")));
+    setDropDownVisibleIdList([...dropDownVisibleIdList, dropDownId]);
+    saveDropDownTodoLocaly(dropDownId, []);
   };
 
   const changeVisibility = (todoId) => {
+    let localDropDownTodosIdList = JSON.parse(localStorage.getItem("dropDownVisibleIdList"));
+    console.log(localDropDownTodosIdList);
+    let filteredlocalDropDownTodosIdList = localDropDownTodosIdList.filter(element => element.id !== todoId);
+    console.log(filteredlocalDropDownTodosIdList);
+    localStorage.setItem("dropDownVisibleIdList", JSON.stringify(filteredlocalDropDownTodosIdList))
+    
     setDropDownVisibleIdList(dropDownVisibleIdList.filter(element => element !== todoId));
   };
 
@@ -39,22 +53,29 @@ const Todo = (props) => {
     if (indexOfOldTodo !== -1) {
       modifiedTodos[indexOfOldTodo][newModifiedText] = props.todos[index].text
       props.todos[index].text = todoValue;
+      let localStorageTodos = JSON.parse(localStorage.getItem("todos"));
+      localStorageTodos = props.todos
+      localStorage.setItem("todos", JSON.stringify(localStorageTodos));
     } else {
       const oldTodo = Object.assign({}, props.todos[index]);
       setModifiedTodos([...modifiedTodos, oldTodo])
       props.todos[index].text = todoValue;
+
+      let localStorageTodos = JSON.parse(localStorage.getItem("todos"));
+      localStorageTodos = props.todos
+      localStorage.setItem("todos", JSON.stringify(localStorageTodos));
     }
     
     setTodoEditVisibilityIdList(todoEditVisibilityIdList.filter(element => element !== todoId));
   }
 
   const openTodoHistoryPage = (todoId) => {
-    const index = modifiedTodos.findIndex(element => element.id === todoId);
-    Object.keys(modifiedTodos[index]).forEach(element => {
-      if(/text/.test(element)) {
-        setCurrentModifiedTodo(modifiedTodos[index])
-      }      
-    });
+    // const index = modifiedTodos.findIndex(element => element.id === todoId);
+    // Object.keys(modifiedTodos[index]).forEach(element => {
+    //   if(/text/.test(element)) {
+    //     setCurrentModifiedTodo(modifiedTodos[index])
+    //   }      
+    // });
 
     navigate(`/home/${todoId}`)
   }  
@@ -88,12 +109,11 @@ const Todo = (props) => {
       />
 
       {
-        // TODO: как работает slice с первой страницей
         getPaginationArray().map((value) => 
           (
             <div className = "todo" key = {value.id}>
               <div className = "todo__wrapper">
-                <span className = {todoEditVisibilityIdList.includes(value.id) ? "todo__span-displayNone" : "todo__span"}>{value.id}. {value.text}</span>
+                <span className = {todoEditVisibilityIdList.includes(value.id) ? "todo__span-displayNone" : "todo__span"}>{value.text}</span>
                 <input type="text" value={todoValue} onChange = {e => setTodoValue(e.target.value)} className = {todoEditVisibilityIdList.includes(value.id) ? "todo__text todo__text-visible" : "todo__text"} />
                 <div className = "todo__buttons">
                   <button className= {todoEditVisibilityIdList.includes(value.id) ? "todo__buttons--button-displayNone" : "todo__buttons--button"} onClick = {e => editTodo(value.id)}><FontAwesomeIcon icon = {faPencil}/></button>
@@ -110,7 +130,7 @@ const Todo = (props) => {
                 </div>
               </div>        
 
-              <DropDownToDo dropDownVisible = {dropDownVisibleIdList.includes(value.id)} removeDropDownTodo = {changeVisibility} todoId = {value.id}  />    
+              <DropDownToDo dropDownVisible = {dropDownVisibleIdList.includes(value.id)} removeDropDownTodo = {changeVisibility} todoId = {value.id} />    
             </div>
           )        
         )  

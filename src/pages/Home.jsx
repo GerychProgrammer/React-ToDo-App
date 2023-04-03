@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import Form from "../components/Form.jsx";
 import Todo from "../components/Todo.jsx";
 import CompletedTodos from "../components/CompletedTodos.jsx";
@@ -7,7 +7,7 @@ import "../styles/reset.scss"
 import "../styles/App.scss"
 
 const Home = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(JSON.parse(localStorage.getItem("todos")));
   const [completedTodos, setCompletedTodos] = useState([]);
   const [sortedAndSearchedTodos, setSortedAndSearchedTodos] = useState([]);
   const [selectedSortType, setSelectedSortType] = useState("");
@@ -16,7 +16,8 @@ const Home = () => {
   const [isSearchVisible, setSearchVisible] = useState(false);
 
   const getInputValue = (value) => {
-    setTodos([...todos, value]);
+    // setTodos([...todos, value]);
+    setTodos(JSON.parse(localStorage.getItem("todos")));
     setSortingVisible(true);
     setSearchVisible(true);
   };
@@ -27,12 +28,10 @@ const Home = () => {
   };
 
   const removeTodo = (todoId) => {
+    let localStorageTodos = JSON.parse(localStorage.getItem("todos"));
+    let filteredLocalStorageTodos = localStorageTodos.filter(element => element.id !== todoId);
+    localStorage.setItem("todos", JSON.stringify(filteredLocalStorageTodos))
     setTodos(todos.filter(element => element.id !== todoId));
-
-    if (todos.length === 1) {
-      setSortingVisible(false);
-      setSearchVisible(false);
-    }
   };
 
   const removeCompleteTodo = (todoId) => {
@@ -78,6 +77,17 @@ const Home = () => {
     }     
     return setSortedAndSearchedTodos(todos)
   }; 
+
+  useEffect(() => {
+    if (todos.length === 0) {
+      setSortingVisible(false);
+      setSearchVisible(false);
+    } else {
+      setSortingVisible(true);
+      setSearchVisible(true);
+    }
+  }, [todos])
+  
   
   return (
     <div className="home">

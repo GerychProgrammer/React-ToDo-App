@@ -48,7 +48,7 @@ const Login = () => {
           </div>
           <div>
             <label>Password</label>
-            <input value = {password} onChange = {e => {setPassword(e.target.value)}} className = "login__password" type = "text" placeholder = "Type here..."/>
+            <input value = {password} onChange = {e => {setPassword(e.target.value)}} className = "login__password" type = "password" placeholder = "Type here..."/>
           </div>
           <button className = "login__submit" onClick = {e => {authorization(e)}}>Login</button>
         </form>
